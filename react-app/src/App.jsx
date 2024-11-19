@@ -1,33 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useReducer, useState } from 'react'
 import './App.css'
+import Button from './Component/Button/Button'
+import Checkbox from './Component/Checkbox/checkbox'
+import Header from './Component/Header/header'
+import ItemDetailsForm from './Component/ItemDetailsForm/ItemDetailsForm'
+
+const intialState = {
+  itemName: "",
+  itemPrice: "",
+  itemQuantity: "",
+  submittionDate: "",
+};
+
+const reducer = (state, action) => ({ ...state, ...action });
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [state, setState] = useReducer(reducer, intialState);
+  const [selectEvent, setSelectEvent] = useState({item: false,  supplier: false});
+
+  const handleItemChange = (e) => {
+    const { name, checked } = e.target;
+    if(name === 'item'){
+      setSelectEvent({supplier:false, item: checked });
+    } else if(name ==='supplier'){
+      setSelectEvent({item:false, supplier: checked });
+    }
+  }
+
+  const handleSaveChanges = () => {
+    console.log(selectEvent);
+    console.log(state);
+    
+  }
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <Header />
+        <div className='checkbox'>
+          <Checkbox label={'Item'} onChange={handleItemChange} name='item' />
+          <Checkbox label={'Supplier'} onChange={handleItemChange} name='supplier' />
+        </div>
+        <div>
+          <h1 style={{textAlign: 'center'}}>Item Details</h1>
+          <ItemDetailsForm state={state} setState={setState} />
+        </div>
+
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}>
+          <Button onClick={handleSaveChanges} />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

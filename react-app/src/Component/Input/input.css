@@ -1,0 +1,12 @@
+.input{
+    width: 478px;
+    border: 1px;
+    height: 36px;
+    border-radius: 6px;
+
+}
+
+.itemBoxName{
+    font-weight: 500;
+    font-size: 14px;
+}
